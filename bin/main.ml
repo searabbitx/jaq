@@ -1,3 +1,3 @@
 open Jaq
 
-let () = print_endline @@ json_pp ()
+let () = Read.read_stdin () |> json_pp |> print_endline
