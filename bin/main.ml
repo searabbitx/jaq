@@ -1,1 +1,3 @@
-let () = print_endline "Hello, World!"
+open Jaq
+
+let () = print_endline @@ json_pp ()

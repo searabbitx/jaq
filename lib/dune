@@ -1,2 +1,3 @@
 (library
- (name jaq))
+ (name jaq)
+ (libraries yojson))
