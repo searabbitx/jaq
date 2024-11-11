@@ -1,0 +1,4 @@
+(executable
+ (public_name jaq)
+ (name main)
+ (libraries jaq))
