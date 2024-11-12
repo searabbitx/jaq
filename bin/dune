@@ -1,4 +1,4 @@
 (executable
  (public_name jaq)
  (name main)
- (libraries jaq))
+ (libraries jaq filter))
