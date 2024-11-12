@@ -17,6 +17,12 @@ let tests =
              assert_equal (`String "baz")
                (extract {|{"foo":{"bar":"baz"}}|} "foo.bar") );
          ];
+    "handle parens"
+    >::: [
+           ( "extract string field" >:: fun _ ->
+             assert_equal (`String "baz")
+               (extract {|{"foo":{"bar":"baz"}}|} "(foo).bar") );
+         ];
   ]
 
 let _ = tests |> List.map run_test_tt_main

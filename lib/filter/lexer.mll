@@ -11,5 +11,7 @@ rule read =
   parse
   | white { read lexbuf }
   | "." { DOT }
+  | "(" { LPAREN }
+  | ")" { RPAREN }
   | id { ID (Lexing.lexeme lexbuf) }
   | eof { EOF }
