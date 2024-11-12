@@ -1,3 +1,5 @@
 (library
  (name jaq)
  (libraries yojson))
+
+(include_subdirs qualified)

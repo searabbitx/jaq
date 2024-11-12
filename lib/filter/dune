@@ -1,0 +1,10 @@
+(library
+ (name filter)
+ (libraries yojson))
+
+(include_subdirs qualified)
+
+(menhir
+ (modules parser))
+
+(ocamllex lexer)
