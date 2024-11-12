@@ -11,6 +11,7 @@ rule read =
   parse
   | white { read lexbuf }
   | "." { DOT }
+  | "," { COMMA }
   | "(" { LPAREN }
   | ")" { RPAREN }
   | "select" { SELECT }

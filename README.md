@@ -44,3 +44,18 @@ $ cat colors.json | jaq "colors.code.hex"
 ```json
 [ "#000", "#FFF", "#FF0" ]
 ```
+
+Select multiple fields
+```bash
+$ cat colors.json | jaq "colors.select(color, category)"
+```
+```json
+[
+  { "color": "black", "category": "hue" },
+  { "color": "white", "category": "value" },
+  { "color": "red", "category": "hue" },
+  { "color": "blue", "category": "hue" },
+  { "color": "yellow", "category": "hue" },
+  { "color": "green", "category": "hue" }
+]
+```
