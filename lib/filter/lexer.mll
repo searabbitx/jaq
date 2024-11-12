@@ -13,5 +13,6 @@ rule read =
   | "." { DOT }
   | "(" { LPAREN }
   | ")" { RPAREN }
+  | "select" { SELECT }
   | id { ID (Lexing.lexeme lexbuf) }
   | eof { EOF }

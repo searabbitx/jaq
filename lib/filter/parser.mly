@@ -7,6 +7,7 @@ open Ast
 %token EOF
 %token LPAREN
 %token RPAREN
+%token SELECT
 
 %left DOT
 
@@ -21,4 +22,5 @@ prog:
 expr:
   | x = ID { Id x } 
   | LPAREN ; e = expr ; RPAREN { e }
+  | SELECT ; LPAREN ; e = expr ; RPAREN { Select e }
   | e1 = expr ; DOT ; e2 = expr { Access (e1, e2) }

@@ -15,10 +15,17 @@ let rec extract_id id = function
   | `List l -> `List (List.map (extract_id id) l)
   | _ -> failwith @@ "Cannot extract id: " ^ id
 
+let rec select id = function
+  | `Assoc l -> `Assoc (List.filter (fun x -> fst x = id) l)
+  | `List l -> `List (List.map (select id) l)
+  | _ -> failwith "Cannot select from non object"
+
 let rec exec_ast ast json =
   match ast with
   | Access (e1, e2) -> exec_ast e1 json |> exec_ast e2
   | Id id -> extract_id id json
+  | Select (Id id) -> select id json
+  | Select _ -> failwith "Select variant not implemented yet"
 
 let exec filter json : Yojson.Safe.t =
   let ast = parse filter in

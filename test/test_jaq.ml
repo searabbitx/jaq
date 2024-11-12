@@ -24,6 +24,16 @@ let tests =
                (`List [ `String "baz1"; `String "baz2" ])
                (extract {|{"foo":[{"bar":"baz1"},{"bar":"baz2"}]}|} "foo.bar")
            );
+           ( "select fields from array" >:: fun _ ->
+             assert_equal
+               (`List
+                 [
+                   `Assoc [ ("bar", `String "baz1") ];
+                   `Assoc [ ("bar", `String "baz2") ];
+                 ])
+               (extract
+                  {|{"foo":[{"bar":"baz1","quix":"quix1"},{"bar":"baz2","quix":"quix2"}]}|}
+                  "foo.select(bar)") );
          ];
   ]
 
