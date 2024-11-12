@@ -10,16 +10,10 @@ let tests =
     >::: [
            ( "extract string field" >:: fun _ ->
              assert_equal (`String "bar") (extract {|{"foo":"bar"}|} "foo") );
-         ];
-    "extract field sub"
-    >::: [
-           ( "extract string field" >:: fun _ ->
+           ( "extract string field sub" >:: fun _ ->
              assert_equal (`String "baz")
                (extract {|{"foo":{"bar":"baz"}}|} "foo.bar") );
-         ];
-    "handle parens"
-    >::: [
-           ( "extract string field" >:: fun _ ->
+           ( "handle parens" >:: fun _ ->
              assert_equal (`String "baz")
                (extract {|{"foo":{"bar":"baz"}}|} "(foo).bar") );
          ];
