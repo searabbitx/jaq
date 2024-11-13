@@ -1,6 +1,6 @@
 (library
  (name filter)
- (libraries yojson))
+ (libraries yojson jaq))
 
 (include_subdirs qualified)
 
