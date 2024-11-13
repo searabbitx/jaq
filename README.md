@@ -53,9 +53,18 @@ $ cat colors.json | jaq "colors.select(color, category)"
 [
   { "color": "black", "category": "hue" },
   { "color": "white", "category": "value" },
-  { "color": "red", "category": "hue" },
-  { "color": "blue", "category": "hue" },
-  { "color": "yellow", "category": "hue" },
-  { "color": "green", "category": "hue" }
+  { "color": "red", "category": "hue" }
+]
+```
+
+You can also access subfields in `select(...)`
+```bash
+$ cat colors.json | jaq "colors.select(color, code.hex)"
+```
+```json
+[
+  { "color": "black", "hex": "#000" },
+  { "color": "white", "hex": "#FFF" },
+  { "color": "red", "hex": "#FF0" },
 ]
 ```
