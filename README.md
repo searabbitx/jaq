@@ -1,6 +1,6 @@
 # jaq
 
-jq-like tool with saner filter language
+jq-like json processing tool with saner filter language
 
 ## Examples
 
