@@ -1,7 +1,7 @@
 open Ast
 open Jaq
 
-let parse (s : string) : expr =
+let parse s =
   let lexbuf = Lexing.from_string s in
   let ast = Parser.prog Lexer.read lexbuf in
   ast
@@ -36,6 +36,6 @@ and exec_ast ast json =
   | Id id -> extract_id id json
   | Select s -> select s json
 
-let exec filter json : Yojson.Safe.t =
+let exec filter json =
   let ast = parse filter in
   exec_ast ast json
