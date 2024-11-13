@@ -44,6 +44,21 @@ let tests =
                (extract
                   {|{"foo":[{"bar":"baz1","quix":"quix1","zix":"zix1"},{"bar":"baz2","quix":"quix2","zix":"zix2"}]}|}
                   "foo.select(bar,quix)") );
+           ( "select multiple sub-fields from array" >:: fun _ ->
+             assert_equal
+               (`List
+                 [
+                   `Assoc [ ("bar", `String "baz1"); ("zix", `String "zix1") ];
+                   `Assoc [ ("bar", `String "baz2"); ("zix", `String "zix2") ];
+                 ])
+               (extract
+                  {|{"foo":
+                      [
+                        {"bar":"baz1","quix":{"zix":"zix1"}},
+                        {"bar":"baz2","quix":{"zix":"zix2"}}
+                      ]
+                    }|}
+                  "foo.select(bar,quix.zix)") );
          ];
   ]
 
