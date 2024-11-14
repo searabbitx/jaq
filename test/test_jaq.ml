@@ -81,6 +81,9 @@ let tests =
              assert_str_equal
                {|{@{<blue>"foos"@}:[{@{<blue>"foo"@}:123},{@{<blue>"foo"@}:321]}|}
                (Print.colorize {|{"foos":[{"foo":123},{"foo":321]}|}) );
+           ( "colorize array" >:: fun _ ->
+             assert_str_equal {|[@{<green>"foo"@},@{<green>"bar"@}]|}
+               (Print.colorize {|["foo","bar"]|}) );
          ];
   ]
 
