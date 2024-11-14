@@ -1,8 +1,11 @@
 open OUnit2
+open Jaq
 
 let extract raw_json filter =
   let json = Yojson.Safe.from_string raw_json in
   Filter.exec filter json
+
+let assert_str_equal = assert_equal ~printer:Fun.id
 
 let tests =
   [
@@ -59,6 +62,12 @@ let tests =
                       ]
                     }|}
                   "foo.select(bar,quix.zix)") );
+         ];
+    "Coloring"
+    >::: [
+           ( "colorize key" >:: fun _ ->
+             assert_str_equal {|{@{<blue>"foo"@}:123}|}
+               (Print.colorize {|{"foo":123}|}) );
          ];
   ]
 
