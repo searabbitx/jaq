@@ -9,9 +9,9 @@ let str_tail = function "" -> "" | s -> String.sub s 1 (String.length s - 1)
 let should_switch_to_neutral str state =
   String.contains ",{}[" (String.get str 0) && state = PostKey
 
-let push_ctx_stack stack state s =
+let update_ctx_stack stack state s =
   match state with
-  | Neutral -> (
+  | Neutral | PostKey -> (
       match s with
       | "{" -> InObj :: stack
       | "[" -> InArray :: stack
@@ -31,8 +31,9 @@ let rec colorize' ctx_stack state acc raw =
       | InKey, _ -> colorize' ctx_stack PostKey (acc ^ "\"@}") rest
       | InVal, _ -> colorize' ctx_stack Neutral (acc ^ "\"@}") rest)
   | Some s when should_switch_to_neutral s state ->
-      colorize' (push_ctx_stack ctx_stack state s) Neutral (acc ^ s) rest
-  | Some s -> colorize' (push_ctx_stack ctx_stack state s) state (acc ^ s) rest
+      colorize' (update_ctx_stack ctx_stack state s) Neutral (acc ^ s) rest
+  | Some s ->
+      colorize' (update_ctx_stack ctx_stack state s) state (acc ^ s) rest
 
 let colorize = colorize' [ Start ] Neutral ""
 
