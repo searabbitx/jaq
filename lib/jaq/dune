@@ -1,5 +1,5 @@
 (library
  (name jaq)
- (libraries yojson ocolor))
+ (libraries yojson ocolor unix))
 
 (include_subdirs qualified)

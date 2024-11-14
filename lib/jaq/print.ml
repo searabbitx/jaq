@@ -24,6 +24,8 @@ let rec colorize' state acc raw =
 let colorize = colorize' Neutral ""
 
 let print raw =
-  let colorized = raw |> colorize |> append_flush in
-  let fmt = Scanf.format_from_string colorized "" in
-  Ocolor_format.printf fmt
+  if Unix.isatty Unix.stdout then
+    let colorized = raw |> colorize |> append_flush in
+    let fmt = Scanf.format_from_string colorized "" in
+    Ocolor_format.printf fmt
+  else print_endline raw
