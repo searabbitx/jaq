@@ -77,6 +77,10 @@ let tests =
            ( "ignore non string vals - sub object" >:: fun _ ->
              assert_str_equal {|{@{<blue>"foo"@}:123,@{<blue>"bar"@}:456}|}
                (Print.colorize {|{"foo":123,"bar":456}|}) );
+           ( "ignore non string vals - array" >:: fun _ ->
+             assert_str_equal
+               {|{@{<blue>"foos"@}:[{@{<blue>"foo"@}:123},{@{<blue>"foo"@}:321]}|}
+               (Print.colorize {|{"foos":[{"foo":123},{"foo":321]}|}) );
          ];
   ]
 

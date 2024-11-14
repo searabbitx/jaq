@@ -16,6 +16,10 @@ let rec colorize' state acc raw =
       | InVal -> colorize' Neutral (acc ^ "\"@}") (str_tail raw))
   | Some "," when state = PostKey ->
       colorize' Neutral (acc ^ ",") (str_tail raw)
+  | Some "}" when state = PostKey ->
+      colorize' Neutral (acc ^ "}") (str_tail raw)
+  | Some "[" when state = PostKey ->
+      colorize' Neutral (acc ^ "[") (str_tail raw)
   | Some s -> colorize' state (acc ^ s) (str_tail raw)
 
 let colorize = colorize' Neutral ""
