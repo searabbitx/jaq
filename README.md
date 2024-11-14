@@ -1,4 +1,5 @@
 # jaq
+![build](https://github.com/searabbitx/ghci-playground/actions/workflows/build-test-release.yml/badge.svg?branch=main)
 
 jq-like json processing tool with saner filter language
 

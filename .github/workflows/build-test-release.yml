@@ -1,0 +1,28 @@
+name: build
+on: [push]
+jobs:
+  Build-Test-Release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: opam
+          version: 1.0
+      - name: init opam
+        run: |
+          opam init --bare -a -y
+          opam switch create ghci ocaml-base-compiler.5.2.0
+          eval $(opam env)
+          opam install -y . --deps-only
+          opam install -y ounit2 ocamlformat
+
+      - name: format
+        run: |
+          eval $(opam env)
+          dune format
+
+      - name: test
+        run: |
+          eval $(opam env)
+          dune runtest
