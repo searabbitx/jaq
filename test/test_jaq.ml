@@ -68,6 +68,15 @@ let tests =
            ( "colorize key" >:: fun _ ->
              assert_str_equal {|{@{<blue>"foo"@}:123}|}
                (Print.colorize {|{"foo":123}|}) );
+           ( "colorize val" >:: fun _ ->
+             assert_str_equal {|{@{<blue>"foo"@}:@{<green>"bar"@}}|}
+               (Print.colorize {|{"foo":"bar"}|}) );
+           ( "ignore non string vals" >:: fun _ ->
+             assert_str_equal {|{@{<blue>"foo"@}:123,@{<blue>"bar"@}:456}|}
+               (Print.colorize {|{"foo":123,"bar":456}|}) );
+           ( "ignore non string vals - sub object" >:: fun _ ->
+             assert_str_equal {|{@{<blue>"foo"@}:123,@{<blue>"bar"@}:456}|}
+               (Print.colorize {|{"foo":123,"bar":456}|}) );
          ];
   ]
 
