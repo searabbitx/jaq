@@ -84,6 +84,12 @@ let tests =
            ( "colorize array" >:: fun _ ->
              assert_str_equal {|[@{<green>"foo"@},@{<green>"bar"@}]|}
                (Print.colorize {|["foo","bar"]|}) );
+           ( "colorize array with special chars" >:: fun _ ->
+             assert_str_equal {|[@{<green>"{foo"@},@{<green>"bar"@}]|}
+               (Print.colorize {|["{foo","bar"]|}) );
+           ( "colorize val with special chars" >:: fun _ ->
+             assert_str_equal {|{@{<blue>"foo["@}:@{<green>"bar"@}}|}
+               (Print.colorize {|{"foo[":"bar"}|}) );
          ];
   ]
 
