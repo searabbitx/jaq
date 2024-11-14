@@ -13,6 +13,7 @@ depends: [
   "ocaml"
   "dune" {>= "3.16"}
   "yojson"
+  "ocolor"
   "odoc" {with-doc}
 ]
 build: [
