@@ -1,9 +1,7 @@
-let maybe_read_line () = try Some (read_line ()) with End_of_file -> None
-
-let read_stdin () =
-  let rec loop acc =
-    match maybe_read_line () with
-    | Some line -> loop (line :: acc)
-    | None -> acc
+let read file =
+  let chan =
+    match file with
+    | Some f -> In_channel.open_text f
+    | None -> In_channel.stdin
   in
-  loop [] |> List.rev |> String.concat "\n"
+  In_channel.input_all chan

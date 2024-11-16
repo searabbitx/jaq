@@ -1,1 +1,1 @@
-val read_stdin : unit -> string
+val read : string option -> string
