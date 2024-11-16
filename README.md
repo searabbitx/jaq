@@ -69,3 +69,31 @@ $ cat colors.json | jaq "colors.select(color, code.hex)"
   { "color": "red", "hex": "#FF0" },
 ]
 ```
+
+Read json from file (note: empty filter returns json as is)
+```bash
+jaq "" colors.json
+```
+```json
+{
+  "colors": [
+    {
+      "color": "black",
+      "category": "hue",
+      "type": "primary",
+      "code": { "rgba": [ 255, 255, 255, 1 ], "hex": "#000" }
+    },
+    {
+      "color": "white",
+      "category": "value",
+      "code": { "rgba": [ 0, 0, 0, 1 ], "hex": "#FFF" }
+    },
+    {
+      "color": "red",
+      "category": "hue",
+      "type": "primary",
+      "code": { "rgba": [ 255, 0, 0, 1 ], "hex": "#FF0" }
+    }
+  ]
+}
+```
