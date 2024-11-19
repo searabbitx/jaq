@@ -9,6 +9,17 @@ jobs:
         with:
           packages: opam binutils
           version: 1.1
+      
+      - name: cache opam # https://discuss.ocaml.org/t/cache-with-gh-action-ocaml-setup-ocaml-v2/11650/7
+        id: cache-opam
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-opam
+        with:
+          path: |
+            /home/runner/.opam/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.opam') }}
+
       - name: init opam
         run: |
           opam init --bare -a -y
