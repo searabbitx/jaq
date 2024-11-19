@@ -21,6 +21,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.opam') }}
 
       - name: init opam
+        if: steps.cache-opam.outputs.cache-hit != 'true'
         run: |
           opam init --bare -a -y
           opam switch create ghci ocaml-base-compiler.5.2.0
