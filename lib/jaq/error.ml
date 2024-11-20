@@ -4,6 +4,7 @@ let exit_with_msg m =
 
 let error_msg = function
   | Yojson.Json_error msg -> "Error parsing json!\n" ^ msg
+  | Sys_error msg -> msg
   | e -> raise e
 
 let handle_error e = e |> error_msg |> exit_with_msg
