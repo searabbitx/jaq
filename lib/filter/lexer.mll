@@ -15,5 +15,6 @@ rule read =
   | "(" { LPAREN }
   | ")" { RPAREN }
   | "select" { SELECT }
+  | "as" { AS }
   | id { ID (Lexing.lexeme lexbuf) }
   | eof { EOF }

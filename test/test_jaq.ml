@@ -62,6 +62,16 @@ let tests =
                       ]
                     }|}
                   "foo.select(bar,quix.zix)") );
+           ( "select fields with alias" >:: fun _ ->
+             assert_equal
+               (`List
+                 [
+                   `Assoc [ ("alias", `String "baz1") ];
+                   `Assoc [ ("alias", `String "baz2") ];
+                 ])
+               (extract
+                  {|{"foo":[{"bar":"baz1","quix":"quix1"},{"bar":"baz2","quix":"quix2"}]}|}
+                  "foo.select(bar as alias)") );
          ];
     "Coloring"
     >::: [

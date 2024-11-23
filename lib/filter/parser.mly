@@ -9,7 +9,9 @@ open Ast
 %token RPAREN
 %token SELECT
 %token COMMA
+%token AS
 
+%left AS
 %left COMMA
 %left DOT
 
@@ -23,6 +25,7 @@ prog:
 
 select:
   | e = expr { SElement (e, SEmpty) } 
+  | e = expr ; AS ; x = ID { SElement (Aliased (e, Id x), SEmpty) }
   | e = expr ; COMMA ; s = select { SElement (e, s) } 
   ;
 
