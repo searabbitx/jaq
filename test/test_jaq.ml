@@ -72,6 +72,18 @@ let tests =
                (extract
                   {|{"foo":[{"bar":"baz1","quix":"quix1"},{"bar":"baz2","quix":"quix2"}]}|}
                   "foo.select(bar as alias)") );
+           ( "alias multiple fields" >:: fun _ ->
+             assert_equal
+               (`List
+                 [
+                   `Assoc
+                     [ ("alias1", `String "baz1"); ("alias2", `String "quix1") ];
+                   `Assoc
+                     [ ("alias1", `String "baz2"); ("alias2", `String "quix2") ];
+                 ])
+               (extract
+                  {|{"foo":[{"bar":"baz1","quix":"quix1","zix":"zix1"},{"bar":"baz2","quix":"quix2","zix":"zix2"}]}|}
+                  "foo.select(bar as alias1,quix as alias2)") );
          ];
     "Coloring"
     >::: [

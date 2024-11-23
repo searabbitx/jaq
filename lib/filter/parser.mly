@@ -26,6 +26,7 @@ prog:
 select:
   | e = expr { SElement (e, SEmpty) } 
   | e = expr ; AS ; x = ID { SElement (Aliased (e, Id x), SEmpty) }
+  | e = expr ; AS ; x = ID ; COMMA ; s = select { SElement (Aliased (e, Id x), s) }
   | e = expr ; COMMA ; s = select { SElement (e, s) } 
   ;
 
