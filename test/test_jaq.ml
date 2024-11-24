@@ -109,6 +109,9 @@ let tests =
              assert_equal
                (`Assoc [ ("foo", `String "bar") ])
                (extract {|{"foo":"bar"}|} "filter(foo == 'bar')") );
+           ( "filter no match" >:: fun _ ->
+             assert_equal `Null
+               (extract {|{"foo":"bar"}|} "filter(foo == 'baz')") );
          ];
     "Coloring"
     >::: [
