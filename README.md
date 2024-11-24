@@ -87,7 +87,7 @@ $ cat colors.json | jaq "colors.select(color as name, code.hex as code)" test_da
 
 Read json from file (note: empty filter returns json as is)
 ```bash
-jaq "" colors.json
+$ jaq "" colors.json
 ```
 ```json
 {
