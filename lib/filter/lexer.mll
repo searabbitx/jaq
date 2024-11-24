@@ -1,5 +1,7 @@
 {
 open Parser
+
+let extract_string s = String.sub s 1 ((String.length s) - 2) ;;
 }
 
 let white = [' ' '\t']+
@@ -20,5 +22,5 @@ rule read =
   | "filter" { FILTER }
   | "as" { AS }
   | id { ID (Lexing.lexeme lexbuf) }
-  | string { STRING (Lexing.lexeme lexbuf) }
+  | string { STRING (lexbuf |> Lexing.lexeme |> extract_string) }
   | eof { EOF }
