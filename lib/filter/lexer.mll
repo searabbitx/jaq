@@ -18,6 +18,7 @@ rule read =
   | "(" { LPAREN }
   | ")" { RPAREN }
   | "==" { EQ }
+  | "!=" { NEQ }
   | "select" { SELECT }
   | "filter" { FILTER }
   | "as" { AS }

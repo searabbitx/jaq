@@ -1,4 +1,4 @@
-type op = Eq
+type op = Eq | Neq
 
 type expr =
   | Id of string

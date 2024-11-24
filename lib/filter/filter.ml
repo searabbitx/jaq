@@ -22,19 +22,19 @@ let rec extract_id id = function
 
 let rec filter_json ast json =
   match ast with
-  | Filter (le, _, re) -> (
+  | Filter (le, op, re) -> (
       match json with
       | `List l -> filter_json_list ast l
-      | _ -> if eval_op le re json then json else `Null)
+      | _ -> if eval_op le op re json then json else `Null)
   | _ -> failwith "Cannot use non-filter ast in filter_json"
 
 and filter_json_list ast l =
   `List (List.filter (fun j -> filter_json ast j <> `Null) l)
 
-and eval_op le re json =
+and eval_op le op re json =
   let left = exec_ast le json in
   let right = exec_ast re json in
-  left = right
+  match op with Eq -> left = right | Neq -> left <> right
 
 and select s = function
   | `Assoc l ->

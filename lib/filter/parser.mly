@@ -12,9 +12,11 @@ open Ast
 %token COMMA
 %token AS
 %token EQ
+%token NEQ
 %token FILTER
 
 %left EQ
+%left NEQ
 %left AS
 %left COMMA
 %left DOT
@@ -34,8 +36,13 @@ select:
   | e = expr ; COMMA ; s = select { SElement (e, s) } 
   ;
 
+operator:
+  | EQ { Eq }
+  | NEQ { Neq }
+  ;
+
 filter:
-  | e1 = expr ; EQ ; e2 = expr { Filter (e1, Eq, e2) }
+  | e1 = expr ; o = operator ; e2 = expr { Filter (e1, o, e2) }
   ;
 
 expr:

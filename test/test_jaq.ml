@@ -119,6 +119,11 @@ let tests =
                (`List [ `Assoc [ ("bar", `String "baz1") ] ])
                (extract {|{"foo":[{"bar":"baz1"},{"bar":"baz2"}]}|}
                   "foo.filter(bar == 'baz1')") );
+           ( "neq operator" >:: fun _ ->
+             assert_json_equal
+               (`List [ `Assoc [ ("bar", `String "baz1") ] ])
+               (extract {|{"foo":[{"bar":"baz1"},{"bar":"baz2"}]}|}
+                  "foo.filter(bar != 'baz2')") );
          ];
     "Coloring"
     >::: [
