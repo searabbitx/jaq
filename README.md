@@ -85,6 +85,20 @@ $ cat colors.json | jaq "colors.select(color as name, code.hex as code)" test_da
 ]
 ```
 
+Filter results
+```bash
+$ cat colors.json | jaq "colors.filter(code.hex == '#FFF')" test_data/colors.json
+```
+```json
+[
+  {
+    "color": "white",
+    "category": "value",
+    "code": { "rgba": [ 0, 0, 0, 1 ], "hex": "#FFF" }
+  }
+]
+```
+
 Read json from file (note: empty filter returns json as is)
 ```bash
 $ jaq "" colors.json
