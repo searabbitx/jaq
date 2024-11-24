@@ -34,7 +34,7 @@ and exec_ast_for_select ?(alias = None) ast json =
       match alias with
       | None -> `Assoc [ (id, extract_id id json) ]
       | Some alias -> `Assoc [ (alias, extract_id id json) ])
-  | Access (e1, e2) -> exec_ast e1 json |> exec_ast_for_select e2
+  | Access (e1, e2) -> exec_ast e1 json |> exec_ast_for_select ~alias e2
   | Aliased (e1, Id alias) -> exec_ast_for_select ~alias:(Some alias) e1 json
   | _ -> failwith "Subselects not implemented yet!"
 
