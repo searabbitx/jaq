@@ -70,6 +70,21 @@ $ cat colors.json | jaq "colors.select(color, code.hex)"
 ]
 ```
 
+Use aliases for fields
+```bash
+$ cat colors.json | jaq "colors.select(color as name, code.hex as code)" test_data/colors.json
+```
+```json
+[
+  { "name": "black", "code": "#000" },
+  { "name": "white", "code": "#FFF" },
+  { "name": "red", "code": "#FF0" },
+  { "name": "blue", "code": "#00F" },
+  { "name": "yellow", "code": "#FF0" },
+  { "name": "green", "code": "#0F0" }
+]
+```
+
 Read json from file (note: empty filter returns json as is)
 ```bash
 jaq "" colors.json
