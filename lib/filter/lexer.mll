@@ -9,6 +9,7 @@ let letter = ['a'-'z' 'A'-'Z']
 let alphanum = ['a'-'z' 'A'-'Z' '0'-'9']
 let id = letter alphanum*
 let string = ("'" _* "'") | ("\"" _* "\"")
+let int = ['0'-'9']+
 let index = "[" ['0'-'9']+ "]"
 
 rule read =
@@ -20,10 +21,15 @@ rule read =
   | ")" { RPAREN }
   | "==" { EQ }
   | "!=" { NEQ }
+  | ">" { GT }
+  | "<" { LT }
+  | ">=" { GEQ }
+  | "<=" { LEQ }
   | "select" { SELECT }
   | "filter" { FILTER }
   | "as" { AS }
   | id { ID (Lexing.lexeme lexbuf) }
+  | int { INT (lexbuf |> Lexing.lexeme |> int_of_string) }
   | string { STRING (lexbuf |> Lexing.lexeme |> extract_string) }
   | index { INDEX (lexbuf |> Lexing.lexeme |> extract_string |> int_of_string) }
   | eof { EOF }

@@ -124,6 +124,11 @@ let tests =
                (`List [ `Assoc [ ("bar", `String "baz1") ] ])
                (extract {|{"foo":[{"bar":"baz1"},{"bar":"baz2"}]}|}
                   "foo.filter(bar != 'baz2')") );
+           ( "gt operator" >:: fun _ ->
+             assert_json_equal
+               (`List [ `Assoc [ ("bar", `Int 20) ] ])
+               (extract {|{"foo":[{"bar":10},{"bar":20}]}|}
+                  "foo.filter(bar > 10)") );
            ( "index extraction" >:: fun _ ->
              assert_json_equal
                (`Assoc [ ("bar", `String "baz1") ])

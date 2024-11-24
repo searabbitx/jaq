@@ -5,6 +5,7 @@ open Ast
 %token <string> ID
 %token <string> STRING
 %token <int> INDEX
+%token <int> INT
 %token DOT
 %token EOF
 %token LPAREN
@@ -14,9 +15,17 @@ open Ast
 %token AS
 %token EQ
 %token NEQ
+%token GT
+%token GEQ
+%token LT
+%token LEQ
 %token FILTER
 
 %left EQ
+%left GT
+%left LT
+%left GEQ
+%left LEQ
 %left NEQ
 %left AS
 %left COMMA
@@ -40,6 +49,10 @@ select:
 operator:
   | EQ { Eq }
   | NEQ { Neq }
+  | GT { Gt }
+  | LT { Lt }
+  | GEQ { Geq }
+  | LEQ { Leq }
   ;
 
 filter:
@@ -49,6 +62,7 @@ filter:
 expr:
   | x = ID { Id x } 
   | s = STRING { String s } 
+  | i = INT { Int i }
   | i = INDEX { Index i }
   | LPAREN ; e = expr ; RPAREN { e }
   | SELECT ; LPAREN ; s = select ; RPAREN { Select s }

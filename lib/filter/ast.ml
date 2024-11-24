@@ -1,8 +1,9 @@
-type op = Eq | Neq
+type op = Eq | Neq | Gt | Lt | Geq | Leq
 
 type expr =
   | Id of string
   | String of string
+  | Int of int
   | Index of int
   | Access of expr * expr
   | Select of select_list

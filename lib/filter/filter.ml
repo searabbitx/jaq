@@ -41,7 +41,13 @@ and filter_json_list ast l =
 and eval_op le op re json =
   let left = exec_ast le json in
   let right = exec_ast re json in
-  match op with Eq -> left = right | Neq -> left <> right
+  match op with
+  | Eq -> left = right
+  | Neq -> left <> right
+  | Gt -> left > right
+  | Geq -> left >= right
+  | Lt -> left < right
+  | Leq -> left <= right
 
 and select s = function
   | `Assoc l ->
@@ -69,6 +75,7 @@ and exec_ast ast json =
   | Select s -> select s json
   | Filter _ -> filter_json ast json
   | String s -> `String s
+  | Int i -> `Int i
   | Aliased _ -> failwith "Cannot use aliases here"
 
 let exec filter json =
