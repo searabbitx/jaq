@@ -8,7 +8,7 @@ let white = [' ' '\t']+
 let letter = ['a'-'z' 'A'-'Z']
 let alphanum = ['a'-'z' 'A'-'Z' '0'-'9']
 let id = letter alphanum*
-let string = "'" _* "'"
+let string = ("'" _* "'") | ("\"" _* "\"")
 
 rule read =
   parse

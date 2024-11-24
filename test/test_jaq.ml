@@ -101,8 +101,10 @@ let tests =
                       ]
                     }|}
                   "foo.select(bar as alias1,quix.zix as alias2)") );
-           ( "string literal" >:: fun _ ->
+           ( "string literal single quote" >:: fun _ ->
              assert_equal (`String "foo") (extract "{}" "'foo'") );
+           ( "string literal double quote" >:: fun _ ->
+             assert_equal (`String "foo") (extract "{}" "\"foo\"") );
            ( "filter match" >:: fun _ ->
              assert_equal
                (`Assoc [ ("foo", `String "bar") ])
