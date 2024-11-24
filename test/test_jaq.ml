@@ -6,29 +6,31 @@ let extract raw_json filter =
   Filter.exec filter json
 
 let assert_str_equal = assert_equal ~printer:Fun.id
+let assert_json_equal = assert_equal ~printer:Yojson.Safe.to_string
 
 let tests =
   [
     "Filtering"
     >::: [
            ( "extract string field" >:: fun _ ->
-             assert_equal (`String "bar") (extract {|{"foo":"bar"}|} "foo") );
+             assert_json_equal (`String "bar") (extract {|{"foo":"bar"}|} "foo")
+           );
            ( "extract string field sub" >:: fun _ ->
-             assert_equal (`String "baz")
+             assert_json_equal (`String "baz")
                (extract {|{"foo":{"bar":"baz"}}|} "foo.bar") );
            ( "extract string field sub sub" >:: fun _ ->
-             assert_equal (`String "quix")
+             assert_json_equal (`String "quix")
                (extract {|{"foo":{"bar":{"baz":"quix"}}}|} "foo.bar.baz") );
            ( "handle parens" >:: fun _ ->
-             assert_equal (`String "baz")
+             assert_json_equal (`String "baz")
                (extract {|{"foo":{"bar":"baz"}}|} "(foo).bar") );
            ( "extract string from array" >:: fun _ ->
-             assert_equal
+             assert_json_equal
                (`List [ `String "baz1"; `String "baz2" ])
                (extract {|{"foo":[{"bar":"baz1"},{"bar":"baz2"}]}|} "foo.bar")
            );
            ( "select fields from array" >:: fun _ ->
-             assert_equal
+             assert_json_equal
                (`List
                  [
                    `Assoc [ ("bar", `String "baz1") ];
@@ -38,7 +40,7 @@ let tests =
                   {|{"foo":[{"bar":"baz1","quix":"quix1"},{"bar":"baz2","quix":"quix2"}]}|}
                   "foo.select(bar)") );
            ( "select multiple fields from array" >:: fun _ ->
-             assert_equal
+             assert_json_equal
                (`List
                  [
                    `Assoc [ ("bar", `String "baz1"); ("quix", `String "quix1") ];
@@ -48,7 +50,7 @@ let tests =
                   {|{"foo":[{"bar":"baz1","quix":"quix1","zix":"zix1"},{"bar":"baz2","quix":"quix2","zix":"zix2"}]}|}
                   "foo.select(bar,quix)") );
            ( "select multiple sub-fields from array" >:: fun _ ->
-             assert_equal
+             assert_json_equal
                (`List
                  [
                    `Assoc [ ("bar", `String "baz1"); ("zix", `String "zix1") ];
@@ -63,7 +65,7 @@ let tests =
                     }|}
                   "foo.select(bar,quix.zix)") );
            ( "select fields with alias" >:: fun _ ->
-             assert_equal
+             assert_json_equal
                (`List
                  [
                    `Assoc [ ("alias", `String "baz1") ];
@@ -73,7 +75,7 @@ let tests =
                   {|{"foo":[{"bar":"baz1","quix":"quix1"},{"bar":"baz2","quix":"quix2"}]}|}
                   "foo.select(bar as alias)") );
            ( "alias multiple fields" >:: fun _ ->
-             assert_equal
+             assert_json_equal
                (`List
                  [
                    `Assoc
@@ -85,7 +87,7 @@ let tests =
                   {|{"foo":[{"bar":"baz1","quix":"quix1","zix":"zix1"},{"bar":"baz2","quix":"quix2","zix":"zix2"}]}|}
                   "foo.select(bar as alias1,quix as alias2)") );
            ( "alias multiple sub-fields" >:: fun _ ->
-             assert_equal
+             assert_json_equal
                (`List
                  [
                    `Assoc
@@ -102,16 +104,21 @@ let tests =
                     }|}
                   "foo.select(bar as alias1,quix.zix as alias2)") );
            ( "string literal single quote" >:: fun _ ->
-             assert_equal (`String "foo") (extract "{}" "'foo'") );
+             assert_json_equal (`String "foo") (extract "{}" "'foo'") );
            ( "string literal double quote" >:: fun _ ->
-             assert_equal (`String "foo") (extract "{}" "\"foo\"") );
+             assert_json_equal (`String "foo") (extract "{}" "\"foo\"") );
            ( "filter match" >:: fun _ ->
-             assert_equal
+             assert_json_equal
                (`Assoc [ ("foo", `String "bar") ])
                (extract {|{"foo":"bar"}|} "filter(foo == 'bar')") );
            ( "filter no match" >:: fun _ ->
-             assert_equal `Null
+             assert_json_equal `Null
                (extract {|{"foo":"bar"}|} "filter(foo == 'baz')") );
+           ( "filter list" >:: fun _ ->
+             assert_json_equal
+               (`List [ `Assoc [ ("bar", `String "baz1") ] ])
+               (extract {|{"foo":[{"bar":"baz1"},{"bar":"baz2"}]}|}
+                  "foo.filter(bar == 'baz1')") );
          ];
     "Coloring"
     >::: [
