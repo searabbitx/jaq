@@ -1,7 +1,11 @@
+type op = Eq
+
 type expr =
   | Id of string
+  | String of string
   | Access of expr * expr
   | Select of select_list
+  | Filter of expr * op * expr
   | Aliased of expr * expr
 
 and select_list = SEmpty | SElement of expr * select_list

@@ -3,6 +3,7 @@ open Ast
 %}
 
 %token <string> ID
+%token <string> STRING
 %token DOT
 %token EOF
 %token LPAREN
@@ -10,7 +11,10 @@ open Ast
 %token SELECT
 %token COMMA
 %token AS
+%token EQ
+%token FILTER
 
+%left EQ
 %left AS
 %left COMMA
 %left DOT
@@ -30,8 +34,14 @@ select:
   | e = expr ; COMMA ; s = select { SElement (e, s) } 
   ;
 
+filter:
+  | e1 = expr ; EQ ; e2 = expr { Filter (e1, Eq, e2) }
+  ;
+
 expr:
   | x = ID { Id x } 
+  | s = STRING { String s } 
   | LPAREN ; e = expr ; RPAREN { e }
   | SELECT ; LPAREN ; s = select ; RPAREN { Select s }
+  | FILTER ; LPAREN ; f = filter ; RPAREN { f }
   | e1 = expr ; DOT ; e2 = expr { Access (e1, e2) }

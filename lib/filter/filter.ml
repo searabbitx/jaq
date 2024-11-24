@@ -20,7 +20,12 @@ let rec extract_id id = function
       let msg = "Cannot extract id: " ^ id in
       raise (Error.FilterError msg)
 
-let rec select s = function
+let rec filter_json ast json =
+  match ast with
+  | Filter (_, _, _) -> json
+  | _ -> failwith "Cannot use non-filter ast in filter_json"
+
+and select s = function
   | `Assoc l ->
       select_list_to_ast_list s
       |> List.map (fun x -> exec_ast_for_select x (`Assoc l))
@@ -43,7 +48,9 @@ and exec_ast ast json =
   | Access (e1, e2) -> exec_ast e1 json |> exec_ast e2
   | Id id -> extract_id id json
   | Select s -> select s json
+  | Filter _ -> filter_json ast json
   | Aliased _ -> failwith "Cannot use aliases here"
+  | String s -> `String s
 
 let exec filter json =
   let ast = parse filter in

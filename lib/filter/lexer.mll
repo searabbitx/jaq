@@ -6,6 +6,7 @@ let white = [' ' '\t']+
 let letter = ['a'-'z' 'A'-'Z']
 let alphanum = ['a'-'z' 'A'-'Z' '0'-'9']
 let id = letter alphanum*
+let string = "'" _* "'"
 
 rule read =
   parse
@@ -14,7 +15,10 @@ rule read =
   | "," { COMMA }
   | "(" { LPAREN }
   | ")" { RPAREN }
+  | "==" { EQ }
   | "select" { SELECT }
+  | "filter" { FILTER }
   | "as" { AS }
   | id { ID (Lexing.lexeme lexbuf) }
+  | string { STRING (Lexing.lexeme lexbuf) }
   | eof { EOF }

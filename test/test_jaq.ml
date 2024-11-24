@@ -101,6 +101,10 @@ let tests =
                       ]
                     }|}
                   "foo.select(bar as alias1,quix.zix as alias2)") );
+           ( "filter match" >:: fun _ ->
+             assert_equal
+               (`Assoc [ ("foo", `String "bar") ])
+               (extract {|{"foo":"bar"}|} "filter(foo == 'bar')") );
          ];
     "Coloring"
     >::: [
