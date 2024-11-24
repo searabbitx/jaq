@@ -6,19 +6,26 @@ let parse s =
   let ast = Parser.prog Lexer.read lexbuf in
   ast
 
+let filter_error msg = raise (Error.FilterError msg)
+
 let extract_id_assoc id l =
   l |> List.filter (fun x -> fst x = id) |> function
   | x :: _ -> snd x
-  | _ ->
-      let msg = "Id '" ^ id ^ "' not found!" in
-      raise (Error.FilterError msg)
+  | _ -> filter_error ("Id '" ^ id ^ "' not found!")
 
 let rec extract_id id = function
   | `Assoc l -> extract_id_assoc id l
   | `List l -> `List (List.map (extract_id id) l)
+  | _ -> filter_error ("Cannot extract id: " ^ id)
+
+let extract_index i = function
+  | `List l -> (
+      match List.nth_opt l i with
+      | Some x -> x
+      | None -> filter_error ("Index: " ^ string_of_int i ^ " out of bounds"))
   | _ ->
-      let msg = "Cannot extract id: " ^ id in
-      raise (Error.FilterError msg)
+      filter_error
+        ("Cannot extract index: " ^ string_of_int i ^ " from non-array")
 
 let rec filter_json ast json =
   match ast with
@@ -42,7 +49,7 @@ and select s = function
       |> List.map (fun x -> exec_ast_for_select x (`Assoc l))
       |> Util.concat_jsons
   | `List l -> `List (List.map (select s) l)
-  | _ -> raise (Error.FilterError "Cannot select from non object")
+  | _ -> filter_error "Cannot select from non object"
 
 and exec_ast_for_select ?(alias = None) ast json =
   match ast with
@@ -58,10 +65,11 @@ and exec_ast ast json =
   match ast with
   | Access (e1, e2) -> exec_ast e1 json |> exec_ast e2
   | Id id -> extract_id id json
+  | Index i -> extract_index i json
   | Select s -> select s json
   | Filter _ -> filter_json ast json
-  | Aliased _ -> failwith "Cannot use aliases here"
   | String s -> `String s
+  | Aliased _ -> failwith "Cannot use aliases here"
 
 let exec filter json =
   let ast = parse filter in

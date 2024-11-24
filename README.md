@@ -72,7 +72,7 @@ $ cat colors.json | jaq "colors.select(color, code.hex)"
 
 Use aliases for fields
 ```bash
-$ cat colors.json | jaq "colors.select(color as name, code.hex as code)" test_data/colors.json
+$ cat colors.json | jaq "colors.select(color as name, code.hex as code)"
 ```
 ```json
 [
@@ -87,7 +87,7 @@ $ cat colors.json | jaq "colors.select(color as name, code.hex as code)" test_da
 
 Filter results
 ```bash
-$ cat colors.json | jaq "colors.filter(code.hex == '#FFF')" test_data/colors.json
+$ cat colors.json | jaq "colors.filter(code.hex == '#FFF')"
 ```
 ```json
 [
@@ -97,6 +97,19 @@ $ cat colors.json | jaq "colors.filter(code.hex == '#FFF')" test_data/colors.jso
     "code": { "rgba": [ 0, 0, 0, 1 ], "hex": "#FFF" }
   }
 ]
+```
+
+Extract index
+```bash
+$ cat colors.json | jaq "colors[2]"
+```
+```json
+{
+  "color": "red",
+  "category": "hue",
+  "type": "primary",
+  "code": { "rgba": [ 255, 0, 0, 1 ], "hex": "#FF0" }
+} 
 ```
 
 Read json from file (note: empty filter returns json as is)

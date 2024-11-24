@@ -4,6 +4,7 @@ open Ast
 
 %token <string> ID
 %token <string> STRING
+%token <int> INDEX
 %token DOT
 %token EOF
 %token LPAREN
@@ -48,7 +49,9 @@ filter:
 expr:
   | x = ID { Id x } 
   | s = STRING { String s } 
+  | i = INDEX { Index i }
   | LPAREN ; e = expr ; RPAREN { e }
   | SELECT ; LPAREN ; s = select ; RPAREN { Select s }
   | FILTER ; LPAREN ; f = filter ; RPAREN { f }
   | e1 = expr ; DOT ; e2 = expr { Access (e1, e2) }
+  | e1 = expr ; i = INDEX { Access(e1, Index i) }

@@ -3,6 +3,7 @@ type op = Eq | Neq
 type expr =
   | Id of string
   | String of string
+  | Index of int
   | Access of expr * expr
   | Select of select_list
   | Filter of expr * op * expr

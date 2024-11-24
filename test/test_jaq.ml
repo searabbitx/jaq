@@ -124,6 +124,10 @@ let tests =
                (`List [ `Assoc [ ("bar", `String "baz1") ] ])
                (extract {|{"foo":[{"bar":"baz1"},{"bar":"baz2"}]}|}
                   "foo.filter(bar != 'baz2')") );
+           ( "index extraction" >:: fun _ ->
+             assert_json_equal
+               (`Assoc [ ("bar", `String "baz1") ])
+               (extract {|{"foo":[{"bar":"baz1"},{"bar":"baz2"}]}|} "foo[0]") );
          ];
     "Coloring"
     >::: [
