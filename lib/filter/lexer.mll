@@ -26,6 +26,7 @@ rule read =
   | ">=" { GEQ }
   | "<=" { LEQ }
   | "&&" { AND }
+  | "||" { OR }
   | "select" { SELECT }
   | "filter" { FILTER }
   | "as" { AS }

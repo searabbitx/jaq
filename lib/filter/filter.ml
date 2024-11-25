@@ -40,7 +40,10 @@ and filter_json_list ast l =
 
 and eval_op f json =
   match f with
-  | LogicOp (le, _, re) -> eval_op le json && eval_op re json
+  | LogicOp (le, op, re) -> (
+      match op with
+      | And -> eval_op le json && eval_op re json
+      | Or -> eval_op le json || eval_op re json)
   | Op (le, op, re) -> (
       let left = exec_ast le json in
       let right = exec_ast re json in

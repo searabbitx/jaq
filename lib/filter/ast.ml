@@ -1,5 +1,5 @@
 type op = Eq | Neq | Gt | Lt | Geq | Leq
-type logic_op = And
+type logic_op = And | Or
 
 type expr =
   | Id of string

@@ -20,6 +20,7 @@ open Ast
 %token LT
 %token LEQ
 %token AND
+%token OR
 %token FILTER
 
 %left EQ
@@ -29,6 +30,7 @@ open Ast
 %left LEQ
 %left NEQ
 %left AND
+%left OR
 %left AS
 %left COMMA
 %left DOT
@@ -59,6 +61,7 @@ operator:
 
 logic_operator:
   | AND { And }
+  | OR { Or }
   ;
 
 filter:
