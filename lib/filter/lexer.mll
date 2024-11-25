@@ -25,6 +25,7 @@ rule read =
   | "<" { LT }
   | ">=" { GEQ }
   | "<=" { LEQ }
+  | "&&" { AND }
   | "select" { SELECT }
   | "filter" { FILTER }
   | "as" { AS }

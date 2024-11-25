@@ -129,6 +129,11 @@ let tests =
                (`List [ `Assoc [ ("bar", `Int 20) ] ])
                (extract {|{"foo":[{"bar":10},{"bar":20}]}|}
                   "foo.filter(bar > 10)") );
+           ( "logical and" >:: fun _ ->
+             assert_json_equal
+               (`List [ `Assoc [ ("bar", `Int 20) ] ])
+               (extract {|{"foo":[{"bar":10},{"bar":20},{"bar":30}]}|}
+                  "foo.filter(bar > 10 && bar < 30)") );
            ( "index extraction" >:: fun _ ->
              assert_json_equal
                (`Assoc [ ("bar", `String "baz1") ])

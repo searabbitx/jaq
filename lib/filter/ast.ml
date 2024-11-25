@@ -1,4 +1,5 @@
 type op = Eq | Neq | Gt | Lt | Geq | Leq
+type logic_op = And
 
 type expr =
   | Id of string
@@ -7,8 +8,12 @@ type expr =
   | Index of int
   | Access of expr * expr
   | Select of select_list
-  | Filter of expr * op * expr
+  | Filter of filter_expr
   | Aliased of expr * expr
+
+and filter_expr =
+  | Op of expr * op * expr
+  | LogicOp of filter_expr * logic_op * filter_expr
 
 and select_list = SEmpty | SElement of expr * select_list
 

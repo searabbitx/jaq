@@ -19,6 +19,7 @@ open Ast
 %token GEQ
 %token LT
 %token LEQ
+%token AND
 %token FILTER
 
 %left EQ
@@ -27,6 +28,7 @@ open Ast
 %left GEQ
 %left LEQ
 %left NEQ
+%left AND
 %left AS
 %left COMMA
 %left DOT
@@ -55,8 +57,13 @@ operator:
   | LEQ { Leq }
   ;
 
+logic_operator:
+  | AND { And }
+  ;
+
 filter:
-  | e1 = expr ; o = operator ; e2 = expr { Filter (e1, o, e2) }
+  | e1 = expr ; o = operator ; e2 = expr { Op (e1, o, e2) }
+  | e1 = filter ; o = logic_operator ; e2 = filter { LogicOp (e1, o, e2) }
   ;
 
 expr:
@@ -66,6 +73,6 @@ expr:
   | i = INDEX { Index i }
   | LPAREN ; e = expr ; RPAREN { e }
   | SELECT ; LPAREN ; s = select ; RPAREN { Select s }
-  | FILTER ; LPAREN ; f = filter ; RPAREN { f }
+  | FILTER ; LPAREN ; f = filter ; RPAREN { Filter f }
   | e1 = expr ; DOT ; e2 = expr { Access (e1, e2) }
   | e1 = expr ; i = INDEX { Access(e1, Index i) }

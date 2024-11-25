@@ -29,25 +29,28 @@ let extract_index i = function
 
 let rec filter_json ast json =
   match ast with
-  | Filter (le, op, re) -> (
+  | Filter f -> (
       match json with
       | `List l -> filter_json_list ast l
-      | _ -> if eval_op le op re json then json else `Null)
+      | _ -> if eval_op f json then json else `Null)
   | _ -> failwith "Cannot use non-filter ast in filter_json"
 
 and filter_json_list ast l =
   `List (List.filter (fun j -> filter_json ast j <> `Null) l)
 
-and eval_op le op re json =
-  let left = exec_ast le json in
-  let right = exec_ast re json in
-  match op with
-  | Eq -> left = right
-  | Neq -> left <> right
-  | Gt -> left > right
-  | Geq -> left >= right
-  | Lt -> left < right
-  | Leq -> left <= right
+and eval_op f json =
+  match f with
+  | LogicOp (le, _, re) -> eval_op le json && eval_op re json
+  | Op (le, op, re) -> (
+      let left = exec_ast le json in
+      let right = exec_ast re json in
+      match op with
+      | Eq -> left = right
+      | Neq -> left <> right
+      | Gt -> left > right
+      | Geq -> left >= right
+      | Lt -> left < right
+      | Leq -> left <= right)
 
 and select s = function
   | `Assoc l ->
