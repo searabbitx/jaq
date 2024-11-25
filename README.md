@@ -98,7 +98,7 @@ $ cat colors.json | jaq "colors[2]"
 }
 ```
 
-Filter results (available operators: `==`, `!=`, `<`, `<=`, `>`, `>=`)
+Filter results (available operators: `==`, `!=`, `<`, `<=`, `>`, `>=`, logical operators: `&&`, `||`)
 ```bash
 $ cat colors.json | jaq "colors.filter(code.hex == '#FFF')"
 ```
@@ -113,7 +113,7 @@ $ cat colors.json | jaq "colors.filter(code.hex == '#FFF')"
 ```
 
 ```bash
-$ cat colors.json | jaq "colors.filter(code.rgba[0] > 0)"
+$ cat colors.json | jaq "colors.filter(color == 'white' || code.rgba[1] > 0)"
 ```
 ```json
 [
@@ -124,10 +124,9 @@ $ cat colors.json | jaq "colors.filter(code.rgba[0] > 0)"
     "code": { "rgba": [ 255, 255, 255, 1 ], "hex": "#000" }
   },
   {
-    "color": "red",
-    "category": "hue",
-    "type": "primary",
-    "code": { "rgba": [ 255, 0, 0, 1 ], "hex": "#FF0" }
+    "color": "white",
+    "category": "value",
+    "code": { "rgba": [ 0, 0, 0, 1 ], "hex": "#FFF" }
   }
 ]
 ```
