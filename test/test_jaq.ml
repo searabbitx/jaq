@@ -129,6 +129,16 @@ let tests =
                (`List [ `Assoc [ ("bar", `Int 20) ] ])
                (extract {|{"foo":[{"bar":10},{"bar":20}]}|}
                   "foo.filter(bar > 10)") );
+           ( "regex match operator" >:: fun _ ->
+             assert_json_equal
+               (`List
+                 [
+                   `Assoc [ ("bar", `String "baz2") ];
+                   `Assoc [ ("bar", `String "bqz3") ];
+                 ])
+               (extract
+                  {|{"foo":[{"bar":"baz1"},{"bar":"baz2"},{"bar":"bqz3"}]}|}
+                  "foo.filter(bar ~ /.z[2-3]/)") );
            ( "logical and" >:: fun _ ->
              assert_json_equal
                (`List [ `Assoc [ ("bar", `Int 20) ] ])
@@ -142,8 +152,7 @@ let tests =
                   "foo.filter(bar < 15 || bar > 25)") );
            ( "logical or / and precedence" >:: fun _ ->
              assert_json_equal
-               (`List
-                 [ `Assoc [ ("bar", `Int 10) ] ] )
+               (`List [ `Assoc [ ("bar", `Int 10) ] ])
                (extract {|{"foo":[{"bar":10},{"bar":20},{"bar":30}]}|}
                   "foo.filter(bar < 15 || bar > 25 && bar < 30)") );
            ( "index extraction" >:: fun _ ->

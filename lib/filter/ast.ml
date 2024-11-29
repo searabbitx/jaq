@@ -1,9 +1,10 @@
-type op = Eq | Neq | Gt | Lt | Geq | Leq
+type op = Eq | Neq | Gt | Lt | Geq | Leq | RegMatch
 type logic_op = And | Or
 
 type expr =
   | Id of string
   | String of string
+  | Regex of Re.re
   | Int of int
   | Index of int
   | Access of expr * expr

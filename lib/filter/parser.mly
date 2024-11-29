@@ -4,6 +4,7 @@ open Ast
 
 %token <string> ID
 %token <string> STRING
+%token <string> REGEX
 %token <int> INDEX
 %token <int> INT
 %token DOT
@@ -17,6 +18,7 @@ open Ast
 %token NEQ
 %token GT
 %token GEQ
+%token REGMATCH
 %token LT
 %token LEQ
 %token AND
@@ -57,6 +59,7 @@ operator:
   | LT { Lt }
   | GEQ { Geq }
   | LEQ { Leq }
+  | REGMATCH { RegMatch }
   ;
 
 logic_operator:
@@ -72,6 +75,7 @@ filter:
 expr:
   | x = ID { Id x } 
   | s = STRING { String s } 
+  | r = REGEX { Regex (Re.compile (Re.Posix.re r)) } 
   | i = INT { Int i }
   | i = INDEX { Index i }
   | LPAREN ; e = expr ; RPAREN { e }

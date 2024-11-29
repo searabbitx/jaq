@@ -44,6 +44,9 @@ and eval_op f json =
       match op with
       | And -> eval_op le json && eval_op re json
       | Or -> eval_op le json || eval_op re json)
+  | Op (le, RegMatch, Regex r) ->
+      let left = exec_ast le json in
+      eval_regex r left
   | Op (le, op, re) -> (
       let left = exec_ast le json in
       let right = exec_ast re json in
@@ -53,7 +56,13 @@ and eval_op f json =
       | Gt -> left > right
       | Geq -> left >= right
       | Lt -> left < right
-      | Leq -> left <= right)
+      | Leq -> left <= right
+      | RegMatch -> failwith "Cannot use '~' here")
+
+and eval_regex r json =
+  match json with
+  | `String s -> Re.execp r s
+  | _ -> filter_error "Cannot match regex against non-string value"
 
 and select s = function
   | `Assoc l ->
@@ -73,7 +82,7 @@ and exec_ast_for_select ?(alias = None) ast json =
   | Aliased (e1, Id alias) -> exec_ast_for_select ~alias:(Some alias) e1 json
   | _ -> failwith "Subselects not implemented yet!"
 
-and exec_ast ast json =
+and exec_ast ast json : Yojson.Safe.t =
   match ast with
   | Access (e1, e2) -> exec_ast e1 json |> exec_ast e2
   | Id id -> extract_id id json
@@ -82,6 +91,7 @@ and exec_ast ast json =
   | Filter _ -> filter_json ast json
   | String s -> `String s
   | Int i -> `Int i
+  | Regex _ -> failwith "Cannot use regex here"
   | Aliased _ -> failwith "Cannot use aliases here"
 
 let exec filter json =

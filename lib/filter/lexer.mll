@@ -11,6 +11,7 @@ let id = letter alphanum*
 let string = ("'" _* "'") | ("\"" _* "\"")
 let int = ['0'-'9']+
 let index = "[" ['0'-'9']+ "]"
+let regex = "/" _* "/"
 
 rule read =
   parse
@@ -25,6 +26,7 @@ rule read =
   | "<" { LT }
   | ">=" { GEQ }
   | "<=" { LEQ }
+  | "~" { REGMATCH }
   | "&&" { AND }
   | "||" { OR }
   | "select" { SELECT }
@@ -33,5 +35,6 @@ rule read =
   | id { ID (Lexing.lexeme lexbuf) }
   | int { INT (lexbuf |> Lexing.lexeme |> int_of_string) }
   | string { STRING (lexbuf |> Lexing.lexeme |> extract_string) }
+  | regex { REGEX (lexbuf |> Lexing.lexeme |> extract_string) }
   | index { INDEX (lexbuf |> Lexing.lexeme |> extract_string |> int_of_string) }
   | eof { EOF }

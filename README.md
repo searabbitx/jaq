@@ -131,6 +131,26 @@ $ cat colors.json | jaq "colors.filter(color == 'white' || code.rgba[1] > 0)"
 ]
 ```
 
+Regex match
+```bash
+$ cat colors.json | jaq "colors.filter(color ~ /black|white/)"
+```
+```json
+[
+  {
+    "color": "black",
+    "category": "hue",
+    "type": "primary",
+    "code": { "rgba": [ 255, 255, 255, 1 ], "hex": "#000" }
+  },
+  {
+    "color": "white",
+    "category": "value",
+    "code": { "rgba": [ 0, 0, 0, 1 ], "hex": "#FFF" }
+  }
+]
+```
+
 Read json from file (note: empty filter returns json as is)
 ```bash
 $ jaq "" colors.json
