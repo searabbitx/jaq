@@ -2,6 +2,7 @@ module Read = Read
 module Util = Util
 module Print = Print
 module Error = Error
+module Args = Args
 
 let parse_json json_string = Yojson.Safe.from_string json_string
 (* val json : Yojson.Safe.t *)
