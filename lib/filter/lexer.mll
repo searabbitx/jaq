@@ -4,7 +4,7 @@ open Parser
 let extract_string s = String.sub s 1 ((String.length s) - 2) ;;
 }
 
-let white = [' ' '\t']+
+let white = [' ' '\t' '\n' '\r']+
 let letter = ['a'-'z' 'A'-'Z']
 let alphanum = ['a'-'z' 'A'-'Z' '0'-'9']
 let id = letter alphanum*
