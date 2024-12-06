@@ -28,6 +28,9 @@ OPTIONS:
   -h, --help         print this message and exit
   -f, --from-file    read filter from file 
   -e, --extract      extract plain-text value from result json
+                     this will convert primitives (string, int, float, null)
+                     to their string representation and arrays of primitives
+                     to new-line separated lists
 
 |}
 

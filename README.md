@@ -3,7 +3,7 @@
 
 jq-like json processing tool with saner filter language
 
-## Examples
+## Filter examples
 
 **colors.json**
 ```json
