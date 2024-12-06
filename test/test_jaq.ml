@@ -188,6 +188,12 @@ let tests =
              assert_str_equal {|{@{<blue>"foo["@}:@{<green>"bar"@}}|}
                (Print.colorize {|{"foo[":"bar"}|}) );
          ];
+    "Coloring"
+    >::: [
+           ( "concat strings" >:: fun _ ->
+             assert_str_equal "foo,bar"
+               (Util.concat_strings "," [ "foo"; "bar" ]) );
+         ];
   ]
 
 let _ = tests |> List.map run_test_tt_main

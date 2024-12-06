@@ -44,4 +44,14 @@ let print raw =
     Ocolor_format.printf fmt
   else print_endline raw
 
-let extract _ = print_endline "TEST"
+let rec extract_val = function
+  | `String s -> s
+  | `Int i -> string_of_int i
+  | `Float f -> string_of_float f
+  | `Null -> "null"
+  | `List l -> l |> List.map extract_val |> Util.concat_strings "\n"
+  | _ ->
+      Error.exit_with_msg
+        "You can only extract primitives and lists of primitives"
+
+let extract json = print_endline @@ extract_val json

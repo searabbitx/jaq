@@ -10,4 +10,12 @@ let rec concat_jsons (js : Yojson.Safe.t list) : Yojson.Safe.t =
   | j :: [] -> j
   | [] -> failwith "Cannot concat empty json list!"
 
+let concat_strings delim ss =
+  let rec aux acc delim = function
+    | s :: r :: rest -> aux (acc ^ s ^ delim) delim (r :: rest)
+    | [ s ] -> acc ^ s
+    | [] -> ""
+  in
+  aux "" delim ss
+
 let comp f g x = f (g x)
