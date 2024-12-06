@@ -9,9 +9,17 @@ let args = function
 let help_msg =
   {|jaq - json processing tool with sane filter language
 
-USAGE: jaq FILTER <INPUT>
+USAGE: jaq [options...] filter [input]
 
-if no input file is provided, stdin will be read|}
+ARGS:
+  filter             filter string
+  input              input file. If none specified, stdin will be read
+
+OPTIONS:
+  -h, --help         print this message and exit
+  -f, --from-file    read filter from file 
+
+|}
 
 let print_help () =
   print_endline help_msg;
