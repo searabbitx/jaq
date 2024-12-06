@@ -4,15 +4,15 @@ let args extract filter_file anons =
   match filter_file with
   | "" -> (
       match anons with
-      | [] -> { filter = None; file = None; extract = extract}
-      | [ filter ] -> { filter = Some filter; file = None; extract = extract }
-      | [ filter; file ] -> { filter = Some filter; file = Some file; extract = extract }
+      | [] -> { filter = None; file = None; extract }
+      | [ filter ] -> { filter = Some filter; file = None; extract }
+      | [ filter; file ] -> { filter = Some filter; file = Some file; extract }
       | _ -> Error.exit_with_msg "Incorrect number of arguments")
   | ff -> (
       let filter = Read.read (Some ff) in
       match anons with
-      | [] -> { filter = Some filter; file = None; extract = extract }
-      | [ file ] -> { filter = Some filter; file = Some file; extract = extract }
+      | [] -> { filter = Some filter; file = None; extract }
+      | [ file ] -> { filter = Some filter; file = Some file; extract }
       | _ -> Error.exit_with_msg "Incorrect number of arguments")
 
 let help_msg =
@@ -38,14 +38,11 @@ let print_help () =
 let apply_optional f s = match f with Some f -> f s | None -> ()
 
 let parse_args () =
-  let anons = ref [] 
-  and filter_file = ref "" 
-  and extract = ref false
-  in
+  let anons = ref [] and filter_file = ref "" and extract = ref false in
   let specs =
     [
       ('h', "help", Some print_help, None);
-      ('e', "extract", (Getopt.set extract true), None);
+      ('e', "extract", Getopt.set extract true, None);
       ( 'f',
         "from-file",
         None,

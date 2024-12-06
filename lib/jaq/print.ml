@@ -43,3 +43,5 @@ let print raw =
     let fmt = Scanf.format_from_string colorized "" in
     Ocolor_format.printf fmt
   else print_endline raw
+
+let extract _ = print_endline "TEST"
