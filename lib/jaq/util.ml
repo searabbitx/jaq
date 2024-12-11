@@ -19,3 +19,13 @@ let concat_strings delim ss =
   aux "" delim ss
 
 let comp f g x = f (g x)
+
+let explode s =
+  let rec exp i l = if i < 0 then l else exp (i - 1) (s.[i] :: l) in
+  exp (String.length s - 1) []
+
+let revplode s =
+  let rec exp i l =
+    if i = String.length s then l else exp (i + 1) (s.[i] :: l)
+  in
+  exp 0 []
