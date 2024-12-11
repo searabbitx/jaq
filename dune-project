@@ -19,7 +19,7 @@
  (name jaq)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune yojson ocolor getopt)
+ (depends ocaml dune yojson ocolor getopt timedesc)
  (tags
   (topics "to describe" your project)))
 
