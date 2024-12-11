@@ -4,13 +4,13 @@ type state = InKey | PostKey | InVal | Neutral
 type ctx = Start | InArray | InObj
 
 let explode s =
-  let rec exp i l =
-    if i < 0 then l else exp (i - 1) (s.[i] :: l) in
+  let rec exp i l = if i < 0 then l else exp (i - 1) (s.[i] :: l) in
   exp (String.length s - 1) []
 
-let revplode s = 
+let revplode s =
   let rec exp i l =
-    if i = (String.length s) then l else exp (i + 1) (s.[i] :: l) in
+    if i = String.length s then l else exp (i + 1) (s.[i] :: l)
+  in
   exp 0 []
 
 let suffix_char s c = s ^ String.make 1 c
@@ -34,16 +34,17 @@ let rec colorize' ctx_stack state acc raw =
   | '"' :: rest -> (
       match (state, List.hd ctx_stack) with
       | Neutral, InArray | PostKey, _ ->
-          colorize' ctx_stack InVal ((revplode "@{<green>\"") @ acc) rest
-      | Neutral, _ -> colorize' ctx_stack InKey ((revplode "@{<blue>\"") @ acc) rest
-      | InKey, _ -> colorize' ctx_stack PostKey ((revplode "\"@}") @ acc) rest
-      | InVal, _ -> colorize' ctx_stack Neutral ((revplode "\"@}") @ acc) rest)
+          colorize' ctx_stack InVal (revplode "@{<green>\"" @ acc) rest
+      | Neutral, _ ->
+          colorize' ctx_stack InKey (revplode "@{<blue>\"" @ acc) rest
+      | InKey, _ -> colorize' ctx_stack PostKey (revplode "\"@}" @ acc) rest
+      | InVal, _ -> colorize' ctx_stack Neutral (revplode "\"@}" @ acc) rest)
   | c :: rest when should_switch_to_neutral c state ->
       colorize' (update_ctx_stack ctx_stack state c) Neutral (c :: acc) rest
   | c :: rest ->
       colorize' (update_ctx_stack ctx_stack state c) state (c :: acc) rest
 
-let colorize raw = 
+let colorize raw =
   let acc = colorize' [ Start ] Neutral [] (explode raw) in
   acc |> List.rev |> List.to_seq |> String.of_seq
 
