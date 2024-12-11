@@ -48,6 +48,7 @@ let rec extract_val = function
   | `String s -> s
   | `Int i -> string_of_int i
   | `Float f -> string_of_float f
+  | `Bool b -> string_of_bool b
   | `Null -> "null"
   | `List l -> l |> List.map extract_val |> Util.concat_strings "\n"
   | _ ->
