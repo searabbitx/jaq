@@ -33,6 +33,8 @@ let function_call f json =
   | "uppercase", _ -> filter_error "Uppercase can be called on strings only!"
   | "lowercase", `String s -> `String (String.lowercase_ascii s)
   | "lowercase", _ -> filter_error "Lowercase can be called on strings only!"
+  | "capitalize", `String s -> `String (String.capitalize_ascii s)
+  | "capitalize", _ -> filter_error "Capitalize can be called on strings only!"
   | _, _ -> filter_error ("Function: " ^ f ^ " does not exist")
 
 let rec filter_json ast json =
