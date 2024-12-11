@@ -27,6 +27,12 @@ let extract_index i = function
       filter_error
         ("Cannot extract index: " ^ string_of_int i ^ " from non-array")
 
+let function_call f json =
+  match (f, json) with
+  | "uppercase", `String s -> `String (String.uppercase_ascii s)
+  | "uppercase", _ -> filter_error "Uppercase can be called on strings only!"
+  | _, _ -> filter_error ("Function: " ^ f ^ " does not exist")
+
 let rec filter_json ast json =
   match ast with
   | Filter f -> (
@@ -93,6 +99,7 @@ and exec_ast ast json : Yojson.Safe.t =
   | Int i -> `Int i
   | Regex _ -> failwith "Cannot use regex here"
   | Aliased _ -> failwith "Cannot use aliases here"
+  | FunctionCall f -> function_call f json
 
 let exec filter json =
   let ast = parse filter in

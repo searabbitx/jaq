@@ -159,6 +159,9 @@ let tests =
              assert_json_equal
                (`Assoc [ ("bar", `String "baz1") ])
                (extract {|{"foo":[{"bar":"baz1"},{"bar":"baz2"}]}|} "foo[0]") );
+           ( "apply uppercase" >:: fun _ ->
+             assert_json_equal (`String "BAR")
+               (extract {|{"foo":"bar"}|} "foo.uppercase()") );
          ];
     "Coloring"
     >::: [

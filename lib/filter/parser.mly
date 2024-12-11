@@ -5,6 +5,7 @@ open Ast
 %token <string> ID
 %token <string> STRING
 %token <string> REGEX
+%token <string> FUNCTIONCALL
 %token <int> INDEX
 %token <int> INT
 %token DOT
@@ -78,6 +79,7 @@ expr:
   | r = REGEX { Regex (Re.compile (Re.Posix.re r)) } 
   | i = INT { Int i }
   | i = INDEX { Index i }
+  | f = FUNCTIONCALL { FunctionCall f }
   | LPAREN ; e = expr ; RPAREN { e }
   | SELECT ; LPAREN ; s = select ; RPAREN { Select s }
   | FILTER ; LPAREN ; f = filter ; RPAREN { Filter f }

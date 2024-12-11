@@ -4,6 +4,7 @@ type logic_op = And | Or
 type expr =
   | Id of string
   | String of string
+  | FunctionCall of string
   | Regex of Re.re
   | Int of int
   | Index of int
