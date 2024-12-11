@@ -165,6 +165,10 @@ let tests =
            ( "apply lowercase" >:: fun _ ->
              assert_json_equal (`String "bar")
                (extract {|{"foo":"BAR"}|} "foo.lowercase()") );
+           ( "apply uppercase in select" >:: fun _ ->
+             assert_json_equal
+               (`Assoc [ ("foo", `String "BAR") ])
+               (extract {|{"foo":"bar"}|} "select(foo.uppercase())") );
          ];
     "Coloring"
     >::: [
