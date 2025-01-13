@@ -79,9 +79,9 @@ expr:
   | r = REGEX { Regex (Re.compile (Re.Posix.re r)) } 
   | i = INT { Int i }
   | i = INDEX { Index i }
-  | f = FUNCTIONCALL { FunctionCall f }
   | LPAREN ; e = expr ; RPAREN { e }
   | SELECT ; LPAREN ; s = select ; RPAREN { Select s }
   | FILTER ; LPAREN ; f = filter ; RPAREN { Filter f }
+  | x = ID ; LPAREN ; RPAREN { FunctionCall (x, FEmpty) }
   | e1 = expr ; DOT ; e2 = expr { Access (e1, e2) }
   | e1 = expr ; i = INDEX { Access(e1, Index i) }

@@ -88,7 +88,7 @@ and exec_ast_for_select ?(alias = None) ast json =
       match alias with
       | None -> `Assoc [ (id, extract_id id json) ]
       | Some alias -> `Assoc [ (alias, extract_id id json) ])
-  | Access (Id id, FunctionCall f) -> (
+  | Access (Id id, FunctionCall (f, _)) -> (
       let json = extract_id id json in
       match alias with
       | None -> `Assoc [ (id, function_call f json) ]
@@ -108,7 +108,7 @@ and exec_ast ast json : Yojson.Safe.t =
   | Int i -> `Int i
   | Regex _ -> failwith "Cannot use regex here"
   | Aliased _ -> failwith "Cannot use aliases here"
-  | FunctionCall f -> function_call f json
+  | FunctionCall (f, _) -> function_call f json
 
 let exec filter json =
   let ast = parse filter in
