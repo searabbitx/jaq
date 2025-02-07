@@ -167,16 +167,16 @@ $ cat colors.json | jaq "colors.select(color.uppercase())"
 ```
 
 ```bash
-$ cat color.json | "colors.select(color.replace(\"a\",\"X\"))"
+$ cat color.json | "colors.select(color.replace(\"e\",\"X\"))"
 ```
 ```json
 [
-  { "color": "blXck" },
-  { "color": "white" },
-  { "color": "red" },
-  { "color": "blue" },
-  { "color": "yellow" },
-  { "color": "green" }
+  { "color": "black" },
+  { "color": "whitX" },
+  { "color": "rXd" },
+  { "color": "bluX" },
+  { "color": "yXllow" },
+  { "color": "grXXn" }
 ]
 ```
 
