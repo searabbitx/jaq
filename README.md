@@ -151,6 +151,35 @@ $ cat colors.json | jaq "colors.filter(color ~ /black|white/)"
 ]
 ```
 
+String helper functions (available functions: uppercase, lowercase, capitalize, replace
+```bash
+$ cat colors.json | jaq "colors.select(color.uppercase())"
+```
+```json
+[
+  { "color": "BLACK" },
+  { "color": "WHITE" },
+  { "color": "RED" },
+  { "color": "BLUE" },
+  { "color": "YELLOW" },
+  { "color": "GREEN" }
+]
+```
+
+```bash
+$ cat color.json | "colors.select(color.replace(\"a\",\"X\"))"
+```
+```json
+[
+  { "color": "blXck" },
+  { "color": "white" },
+  { "color": "red" },
+  { "color": "blue" },
+  { "color": "yellow" },
+  { "color": "green" }
+]
+```
+
 Read json from file (note: empty filter returns json as is)
 ```bash
 $ jaq "" colors.json
