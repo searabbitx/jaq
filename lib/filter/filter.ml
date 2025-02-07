@@ -27,15 +27,20 @@ let extract_index i = function
       filter_error
         ("Cannot extract index: " ^ string_of_int i ^ " from non-array")
 
-let function_call f json =
-  match (f, json) with
-  | "uppercase", `String s -> `String (String.uppercase_ascii s)
-  | "uppercase", _ -> filter_error "Uppercase can be called on strings only!"
-  | "lowercase", `String s -> `String (String.lowercase_ascii s)
-  | "lowercase", _ -> filter_error "Lowercase can be called on strings only!"
-  | "capitalize", `String s -> `String (String.capitalize_ascii s)
-  | "capitalize", _ -> filter_error "Capitalize can be called on strings only!"
-  | _, _ -> filter_error ("Function: " ^ f ^ " does not exist")
+let function_call f args json =
+  match (f, args, json) with
+  | "uppercase", FEmpty, `String s -> `String (String.uppercase_ascii s)
+  | "uppercase", _, _ -> filter_error "Uppercase can be called on strings only!"
+  | "lowercase", FEmpty, `String s -> `String (String.lowercase_ascii s)
+  | "lowercase", _, _ -> filter_error "Lowercase can be called on strings only!"
+  | "capitalize", FEmpty, `String s -> `String (String.capitalize_ascii s)
+  | "capitalize", _, _ ->
+      filter_error "Capitalize can be called on strings only!"
+  | "replace", FElement (String x, FElement (String y, FEmpty)), `String s ->
+      let r = Re.compile (Re.Posix.re x) in
+      `String (Re.replace_string ~all:true r ~by:y s)
+  | "replace", _, _ -> filter_error "Replace can be called on strings only!"
+  | _, _, _ -> filter_error ("Function: " ^ f ^ " does not exist")
 
 let rec filter_json ast json =
   match ast with
@@ -88,11 +93,11 @@ and exec_ast_for_select ?(alias = None) ast json =
       match alias with
       | None -> `Assoc [ (id, extract_id id json) ]
       | Some alias -> `Assoc [ (alias, extract_id id json) ])
-  | Access (Id id, FunctionCall (f, _)) -> (
+  | Access (Id id, FunctionCall (f, args)) -> (
       let json = extract_id id json in
       match alias with
-      | None -> `Assoc [ (id, function_call f json) ]
-      | Some alias -> `Assoc [ (alias, function_call f json) ])
+      | None -> `Assoc [ (id, function_call f args json) ]
+      | Some alias -> `Assoc [ (alias, function_call f args json) ])
   | Access (e1, e2) -> exec_ast e1 json |> exec_ast_for_select ~alias e2
   | Aliased (e1, Id alias) -> exec_ast_for_select ~alias:(Some alias) e1 json
   | _ -> failwith "Subselects not implemented yet!"
@@ -108,7 +113,7 @@ and exec_ast ast json : Yojson.Safe.t =
   | Int i -> `Int i
   | Regex _ -> failwith "Cannot use regex here"
   | Aliased _ -> failwith "Cannot use aliases here"
-  | FunctionCall (f, _) -> function_call f json
+  | FunctionCall (f, args) -> function_call f args json
 
 let exec filter json =
   let ast = parse filter in

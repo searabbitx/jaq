@@ -172,6 +172,9 @@ let tests =
            ( "apply capitalize" >:: fun _ ->
              assert_json_equal (`String "Bar")
                (extract {|{"foo":"bar"}|} "foo.capitalize()") );
+           ( "apply replace" >:: fun _ ->
+             assert_json_equal (`String "jXYn doe")
+               (extract {|{"foo":"john doe"}|} {|foo.replace("oh","XY")|}) );
          ];
     "Coloring"
     >::: [

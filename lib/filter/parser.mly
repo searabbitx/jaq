@@ -14,6 +14,7 @@ open Ast
 %token RPAREN
 %token SELECT
 %token COMMA
+%token QUOTE
 %token AS
 %token EQ
 %token NEQ
@@ -73,6 +74,11 @@ filter:
   | e1 = filter ; o = logic_operator ; e2 = filter { LogicOp (e1, o, e2) }
   ;
 
+function_call:
+  | e = expr ; COMMA ; f = function_call { FElement (e, f) }
+  | e = expr { FElement (e, FEmpty) }
+  ;
+
 expr:
   | x = ID { Id x } 
   | s = STRING { String s } 
@@ -83,5 +89,6 @@ expr:
   | SELECT ; LPAREN ; s = select ; RPAREN { Select s }
   | FILTER ; LPAREN ; f = filter ; RPAREN { Filter f }
   | x = ID ; LPAREN ; RPAREN { FunctionCall (x, FEmpty) }
+  | x = ID ; LPAREN ; f = function_call ; RPAREN { FunctionCall (x, f) }
   | e1 = expr ; DOT ; e2 = expr { Access (e1, e2) }
   | e1 = expr ; i = INDEX { Access(e1, Index i) }

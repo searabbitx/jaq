@@ -8,7 +8,7 @@ let white = [' ' '\t' '\n' '\r']+
 let letter = ['a'-'z' 'A'-'Z']
 let alphanum = ['a'-'z' 'A'-'Z' '0'-'9']
 let id = letter alphanum*
-let string = ("'" _* "'") | ("\"" _* "\"")
+let string = ("'" _* "'") | ("\"" [^'"']* "\"")
 let int = ['0'-'9']+
 let index = "[" ['0'-'9']+ "]"
 let regex = "/" _* "/"
@@ -18,6 +18,7 @@ rule read =
   | white { read lexbuf }
   | "." { DOT }
   | "," { COMMA }
+  | "\"" { QUOTE }
   | "(" { LPAREN }
   | ")" { RPAREN }
   | "==" { EQ }
