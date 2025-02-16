@@ -1,12 +1,12 @@
 open Ast
+open Functioncall
 open Jaq
+open Error
 
 let parse s =
   let lexbuf = Lexing.from_string s in
   let ast = Parser.prog Lexer.read lexbuf in
   ast
-
-let filter_error msg = raise (Error.FilterError msg)
 
 let extract_id_assoc id l =
   l |> List.filter (fun x -> fst x = id) |> function
@@ -26,21 +26,6 @@ let extract_index i = function
   | _ ->
       filter_error
         ("Cannot extract index: " ^ string_of_int i ^ " from non-array")
-
-let function_call f args json =
-  match (f, args, json) with
-  | "uppercase", FEmpty, `String s -> `String (String.uppercase_ascii s)
-  | "uppercase", _, _ -> filter_error "Uppercase can be called on strings only!"
-  | "lowercase", FEmpty, `String s -> `String (String.lowercase_ascii s)
-  | "lowercase", _, _ -> filter_error "Lowercase can be called on strings only!"
-  | "capitalize", FEmpty, `String s -> `String (String.capitalize_ascii s)
-  | "capitalize", _, _ ->
-      filter_error "Capitalize can be called on strings only!"
-  | "replace", FElement (String x, FElement (String y, FEmpty)), `String s ->
-      let r = Re.compile (Re.Posix.re x) in
-      `String (Re.replace_string ~all:true r ~by:y s)
-  | "replace", _, _ -> filter_error "Replace can be called on strings only!"
-  | _, _, _ -> filter_error ("Function: " ^ f ^ " does not exist")
 
 let rec filter_json ast json =
   match ast with

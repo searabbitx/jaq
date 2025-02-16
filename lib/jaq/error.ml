@@ -1,5 +1,7 @@
 exception FilterError of string
 
+let filter_error msg = raise (FilterError msg)
+
 let exit_with_msg m =
   print_endline m;
   exit 1
